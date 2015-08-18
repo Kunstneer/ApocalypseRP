@@ -1,0 +1,9 @@
+ITEM.name = "Suitcase"
+ITEM.desc = "A large suitcase that holds a lot."
+ITEM.width = 5
+ITEM.height = 3
+ITEM.invWidth = 7
+ITEM.invHeight = 4
+ITEM.permit = "misc"
+ITEM.price = 20
+ITEM.model = "models/props_c17/BriefCase001a.mdl"
