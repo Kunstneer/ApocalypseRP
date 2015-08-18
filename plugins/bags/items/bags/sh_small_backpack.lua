@@ -1,5 +1,5 @@
-ITEM.name = "Small Bag"
-ITEM.desc = "A small bag that does not carry much."
+ITEM.name = "Small Backpack"
+ITEM.desc = "A small backpack that does not carry much."
 ITEM.width = 1
 ITEM.height = 2
 ITEM.invWidth = 2
