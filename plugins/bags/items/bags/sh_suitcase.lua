@@ -1,5 +1,5 @@
 ITEM.name = "Suitcase"
-ITEM.desc = "A lare suitcase that holds a lot."
+ITEM.desc = "A large suitcase that holds a lot."
 ITEM.width = 5
 ITEM.height = 3
 ITEM.invWidth = 7
