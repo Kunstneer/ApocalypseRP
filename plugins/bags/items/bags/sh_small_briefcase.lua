@@ -1,5 +1,5 @@
 ITEM.name = "Small Briefcase"
-ITEM.desc = "A small bag that does not carry much."
+ITEM.desc = "A small briefcase that does not carry much."
 ITEM.width = 2
 ITEM.height = 1
 ITEM.invWidth = 3
