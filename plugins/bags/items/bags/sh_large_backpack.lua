@@ -1,0 +1,9 @@
+ITEM.name = "Large Backpack"
+ITEM.desc = "A large backpack from the military base. Able to carry a lot."
+ITEM.width = 3
+ITEM.height = 4
+ITEM.invWidth = 4
+ITEM.invHeight = 5
+ITEM.permit = "misc"
+ITEM.price = 20
+ITEM.model = "models/props_c17/BriefCase001a.mdl"
