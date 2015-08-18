@@ -1,6 +1,6 @@
 FACTION.name = "Military Command"
 FACTION.desc = "Commanding units from the old military."
-FACTION.color = Color(25, 30, 180)
+FACTION.color = Color(181, 94, 94)
 FACTION.isDefault = false
 FACTION.models = {
 	"models/police.mdl"
