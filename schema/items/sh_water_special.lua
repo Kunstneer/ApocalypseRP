@@ -1,5 +1,5 @@
 ITEM.name = "Special Water"
-ITEM.desc = "A blue can of plain water."
+ITEM.desc = "A can can of 'special' water."
 ITEM.model = "models/props_junk/popcan01a.mdl"
 ITEM.healthRestore = 20
 ITEM.restore = 100
