@@ -1,0 +1,7 @@
+"sample"
+{
+	"base"		"nutscript"
+	"title"		"Apocalypse RP"
+	"author"	"Chessnut and NDKilla"
+	"menusystem"	"1"
+}
