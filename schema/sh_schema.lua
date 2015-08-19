@@ -1,7 +1,7 @@
-SCHEMA.name = "HL2 RP"
-SCHEMA.introName = "Half-Life 2 Roleplay"
-SCHEMA.author = "Chessnut"
-SCHEMA.desc = "Under rule of the Universal Union."
+SCHEMA.name = "Apocalypse RP"
+SCHEMA.introName = "Apocalypse Roleplay"
+SCHEMA.author = "Chessnut and NDKilla"
+SCHEMA.desc = "In the wasteland..."
 
 function SCHEMA:isCombineFaction(faction)
 	return faction == FACTION_CP or faction == FACTION_OW
