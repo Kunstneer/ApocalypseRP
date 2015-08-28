@@ -3,36 +3,20 @@ SCHEMA.introName = "Apocalypse Roleplay"
 SCHEMA.author = "Chessnut and NDKilla"
 SCHEMA.desc = "In the wasteland..."
 
-function SCHEMA:isCombineFaction(faction)
-	return faction == FACTION_CP or faction == FACTION_OW
-end
-
 function SCHEMA:isMilitaryFaction(faction)
-	return faction == FACTION_MILITARY or faction == FACTION_MILITARY_COMMAND
+	return faction == FACTION_MILITARY or faction == FACTION_MILITARYCOMMAND
 end
 
 do
 	local playerMeta = FindMetaTable("Player")
 
-	function playerMeta:isCombine()
-		return SCHEMA:isCombineFaction(self:Team())
-	end
-
 	function playerMeta:isMilitary()
-		return SCHEMA:isCMilitaryFaction(self:Team())
+		return SCHEMA:isMilitaryFaction(self:Team())
 	end
 	
 	function playerMeta:getMilitaryRank()
 		local name = self:Name()
 
-		for k, v in ipairs(SCHEMA.scnRanks) do
-			local rank = string.PatternSafe(v)
-
-			if (name:find("[%D+]"..rank.."[%D+]")) then
-				return v
-			end
-		end
-
 		for k, v in ipairs(SCHEMA.rctRanks) do
 			local rank = string.PatternSafe(v)
 
@@ -55,42 +39,6 @@ do
 			if (name:find("[%D+]"..rank.."[%D+]")) then
 				return v
 			end
-	end
-	
-	function playerMeta:getCombineRank()
-		local name = self:Name()
-
-		for k, v in ipairs(SCHEMA.scnRanks) do
-			local rank = string.PatternSafe(v)
-
-			if (name:find("[%D+]"..rank.."[%D+]")) then
-				return v
-			end
-		end
-
-		for k, v in ipairs(SCHEMA.rctRanks) do
-			local rank = string.PatternSafe(v)
-
-			if (name:find("[%D+]"..rank.."[%D+]")) then
-				return v
-			end
-		end
-
-		for k, v in ipairs(SCHEMA.unitRanks) do
-			local rank = string.PatternSafe(v)
-
-			if (name:find("[%D+]"..rank.."[%D+]")) then
-				return v
-			end
-		end
-
-		for k, v in ipairs(SCHEMA.eliteRanks) do
-			local rank = string.PatternSafe(v)
-
-			if (name:find("[%D+]"..rank.."[%D+]")) then
-				return v
-			end
-		end
 	end
 
 	function playerMeta:isMilitaryRank(rank)
@@ -110,49 +58,9 @@ do
 			return self:getMilitaryRank() == rank
 		end
 	end
-
-	function playerMeta:isCombineRank(rank)
-		if (type(rank) == "table") then
-			local name = self:Name()
-
-			for k, v in ipairs(rank) do
-				local rank = string.PatternSafe(v)
-
-				if (name:find("[%D+]"..rank.."[%D+]")) then
-					return v
-				end				
-			end
-
-			return false
-		else
-			return self:getCombineRank() == rank
-		end
-	end
-
-	function playerMeta:getMRank()
-		for k, v in ipairs(team.GetPlayers(FACTION_CP)) do
-			local eliteRanks = string.Explode(",", nut.config.get("rankElite", "RCT"):gsub("%s", ""))
-			local unitRanks = string.Explode(",", nut.config.get("rankUnit", "RCT"):gsub("%s", ""))
-			local name = string.PatternSafe(v:Name())
-
-			for k, v in ipairs(eliteRanks) do
-				if (name:find(v)) then
-					return CLASS_CP_ELITE
-				end
-			end
-
-			for k, v in ipairs(unitRanks) do
-				if (name:find(v)) then
-					return CLASS_CP_UNIT
-				end
-			end
-
-			return CLASS_CP_RCT
-		end
-	end
-
+--[[
 	function playerMeta:getRank()
-		for k, v in ipairs(team.GetPlayers(FACTION_CP)) do
+		for k, v in ipairs(team.GetPlayers(FACTION_MILITARY)) do
 			local eliteRanks = string.Explode(",", nut.config.get("rankElite", "RCT"):gsub("%s", ""))
 			local unitRanks = string.Explode(",", nut.config.get("rankUnit", "RCT"):gsub("%s", ""))
 			local name = string.PatternSafe(v:Name())
@@ -172,9 +80,10 @@ do
 			return CLASS_CP_RCT
 		end
 	end
+]]--
 
 	function SCHEMA:isDispatch(client)
-		return client:isMilitaryRank(self.eliteRanks) or client:isCombineRank(self.scnRanks)
+		return client:isMilitaryRank(self.eliteRanks) or client:Team() == FACTION_MILITARYCOMMAND
 	end
 
 	function playerMeta:getDigits()
@@ -348,11 +257,11 @@ nut.chat.register("request", {
 		chat.AddText(Color(210, 77, 87), text)
 	end,
 	onCanHear = function(speaker, listener)
-		return listener:isCombine()
+		return listener:isMilitary()
 	end
 })
 
 nut.flag.add("y", "Access to the light blackmarket items.")
 nut.flag.add("Y", "Access to the heavy blackmarket items.")
 
-nut.currency.set("", "token", "tokens")
+nut.currency.set("", "cap", "caps")
