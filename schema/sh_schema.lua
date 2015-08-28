@@ -91,7 +91,7 @@ do
 				return v
 			end
 		end
-end
+	end
 
 	function playerMeta:isMilitaryRank(rank)
 		if (type(rank) == "table") then
@@ -109,7 +109,7 @@ end
 		else
 			return self:getMilitaryRank() == rank
 		end
-end
+	end
 
 	function playerMeta:isCombineRank(rank)
 		if (type(rank) == "table") then
