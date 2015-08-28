@@ -7,6 +7,10 @@ function SCHEMA:isCombineFaction(faction)
 	return faction == FACTION_CP or faction == FACTION_OW
 end
 
+function SCHEMA:isMilitaryFaction(faction)
+	return faction == FACTION_MILITARY or faction == FACTION_MILITARY_COMMAND
+end
+
 do
 	local playerMeta = FindMetaTable("Player")
 
@@ -14,6 +18,45 @@ do
 		return SCHEMA:isCombineFaction(self:Team())
 	end
 
+	function playerMeta:isMilitary()
+		return SCHEMA:isCMilitaryFaction(self:Team())
+	end
+	
+	function playerMeta:getMilitaryRank()
+		local name = self:Name()
+
+		for k, v in ipairs(SCHEMA.scnRanks) do
+			local rank = string.PatternSafe(v)
+
+			if (name:find("[%D+]"..rank.."[%D+]")) then
+				return v
+			end
+		end
+
+		for k, v in ipairs(SCHEMA.rctRanks) do
+			local rank = string.PatternSafe(v)
+
+			if (name:find("[%D+]"..rank.."[%D+]")) then
+				return v
+			end
+		end
+
+		for k, v in ipairs(SCHEMA.unitRanks) do
+			local rank = string.PatternSafe(v)
+
+			if (name:find("[%D+]"..rank.."[%D+]")) then
+				return v
+			end
+		end
+
+		for k, v in ipairs(SCHEMA.eliteRanks) do
+			local rank = string.PatternSafe(v)
+
+			if (name:find("[%D+]"..rank.."[%D+]")) then
+				return v
+			end
+	end
+	
 	function playerMeta:getCombineRank()
 		local name = self:Name()
 
@@ -50,6 +93,24 @@ do
 		end
 	end
 
+	function playerMeta:isMilitaryRank(rank)
+		if (type(rank) == "table") then
+			local name = self:Name()
+
+			for k, v in ipairs(rank) do
+				local rank = string.PatternSafe(v)
+
+				if (name:find("[%D+]"..rank.."[%D+]")) then
+					return v
+				end				
+			end
+
+			return false
+		else
+			return self:getMilitaryRank() == rank
+		end
+	end
+
 	function playerMeta:isCombineRank(rank)
 		if (type(rank) == "table") then
 			local name = self:Name()
@@ -65,6 +126,28 @@ do
 			return false
 		else
 			return self:getCombineRank() == rank
+		end
+	end
+
+	function playerMeta:getMRank()
+		for k, v in ipairs(team.GetPlayers(FACTION_CP)) do
+			local eliteRanks = string.Explode(",", nut.config.get("rankElite", "RCT"):gsub("%s", ""))
+			local unitRanks = string.Explode(",", nut.config.get("rankUnit", "RCT"):gsub("%s", ""))
+			local name = string.PatternSafe(v:Name())
+
+			for k, v in ipairs(eliteRanks) do
+				if (name:find(v)) then
+					return CLASS_CP_ELITE
+				end
+			end
+
+			for k, v in ipairs(unitRanks) do
+				if (name:find(v)) then
+					return CLASS_CP_UNIT
+				end
+			end
+
+			return CLASS_CP_RCT
 		end
 	end
 
@@ -91,11 +174,11 @@ do
 	end
 
 	function SCHEMA:isDispatch(client)
-		return client:isCombineRank(self.eliteRanks) or client:isCombineRank(self.scnRanks)
+		return client:isMilitaryRank(self.eliteRanks) or client:isCombineRank(self.scnRanks)
 	end
 
 	function playerMeta:getDigits()
-		if (self:isCombine()) then
+		if (self:isMilitary()) then
 			local name = self:Name():reverse()
 			local digits = name:match("(%d+)")
 
@@ -109,7 +192,7 @@ do
 
 	if (SERVER) then
 		function playerMeta:addDisplay(text, color)
-			if (self:isCombine()) then
+			if (self:isMilitary()) then
 				netstream.Start(self, "cDisp", text, color)
 			end
 		end
@@ -118,7 +201,7 @@ do
 			local receivers = {}
 
 			for k, v in ipairs(player.GetAll()) do
-				if (v:isCombine()) then
+				if (v:isMilitary()) then
 					receivers[#receivers + 1] = v
 				end
 			end
